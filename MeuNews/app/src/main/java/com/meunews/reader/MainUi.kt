@@ -123,7 +123,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             MaterialTheme(colorScheme = Dark) {
-                Surface(Modifier.fillMaxSize()) { Box(Modifier.windowInsetsPadding(WindowInsets.displayCutout)) { NewsApp() } }
+                Surface(Modifier.fillMaxSize()) { Box(Modifier.windowInsetsPadding(WindowInsets.displayCutout)) { Gate { NewsApp() } } }
             }
         }
     }

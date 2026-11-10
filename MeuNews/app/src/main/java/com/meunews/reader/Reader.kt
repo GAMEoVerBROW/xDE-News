@@ -94,7 +94,7 @@ fun ReaderScreen(a: Article, vm: VM) {
             val p = paras
             when {
                 p == null -> Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
-                p.size < 3 -> WebPage(a.link)
+                p.size < 3 -> { Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }; LaunchedEffect(Unit) { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(a.link))); vm.reading = null } }
                 else -> {
                     val shown = if (translate) (done ?: p) else p
                     LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {

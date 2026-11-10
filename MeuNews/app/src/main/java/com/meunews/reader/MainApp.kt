@@ -57,7 +57,7 @@ class VM(app: Application) : AndroidViewModel(app) {
 
     private fun load(): List<Feed> {
         val raw = prefs.getString("feeds", null)
-            ?: return listOf(Feed("G1", "https://g1.globo.com/rss/g1/"), googleNewsFeed("tecnologia"))
+            ?: return listOf(Feed("IGN", "https://www.ign.com/rss/v2/articles/feed"), googleNewsFeed("Games"))
         val a = JSONArray(raw)
         return (0 until a.length()).map { a.getJSONObject(it).let { o -> Feed(o.getString("t"), o.getString("u")) } }
     }

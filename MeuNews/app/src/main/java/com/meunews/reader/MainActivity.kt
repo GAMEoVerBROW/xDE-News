@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.meunews.reader
 
 import android.app.Application
@@ -58,7 +60,7 @@ class VM(app: Application) : AndroidViewModel(app) {
         items = withContext(Dispatchers.IO) {
             (sel?.let { listOf(it) } ?: feeds)
                 .map { f -> async { runCatching { parseFeed(Net.get(f.url), f.title) }.getOrDefault(emptyList()) } }
-                .awaitAll().flatten().sortedByDescending { it.time }.take(200)
+                .awaitAll().flatten().distinctBy { it.link }.sortedByDescending { it.time }.take(200)
         }
         loading = false
     }
@@ -80,7 +82,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val dark = androidx.compose.foundation.isSystemInDarkTheme()
             val ctx = LocalContext.current
-            MaterialTheme(colorScheme = if (dark) dynamicDarkColorScheme(ctx) else dynamicLightColorScheme(ctx)) {
+            val scheme = if (android.os.Build.VERSION.SDK_INT >= 31) { if (dark) dynamicDarkColorScheme(ctx) else dynamicLightColorScheme(ctx) } else { if (dark) darkColorScheme() else lightColorScheme() }
+            MaterialTheme(colorScheme = scheme) {
                 Surface(Modifier.fillMaxSize()) { NewsApp() }
             }
         }

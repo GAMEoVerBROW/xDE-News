@@ -33,7 +33,7 @@ private val dateFmts = listOf("EEE, dd MMM yyyy HH:mm:ss zzz", "EEE, dd MMM yyyy
 private fun parseDate(s: String): Long {
     for (f in dateFmts) try {
         return SimpleDateFormat(f, Locale.US).apply { timeZone = TimeZone.getTimeZone("UTC") }.parse(s.trim())!!.time
-    } catch (_: Exception) {}
+    } catch (e: Exception) {}
     return 0L
 }
 
@@ -98,7 +98,7 @@ fun ogImage(link: String): String? = try {
     val html = Net.get(link).take(150000)
     Regex("<meta[^>]+property=[\"']og:image[\"'][^>]+content=[\"']([^\"']+)[\"']", RegexOption.IGNORE_CASE).find(html)?.groupValues?.get(1)
         ?: Regex("<meta[^>]+content=[\"']([^\"']+)[\"'][^>]+property=[\"']og:image[\"']", RegexOption.IGNORE_CASE).find(html)?.groupValues?.get(1)
-} catch (_: Exception) { null }
+} catch (e: Exception) { null }
 
 /** Traduz para PT-BR; se o texto já for português, devolve o original. */
 object Tr {
@@ -113,6 +113,6 @@ object Tr {
                 val a = j.getJSONArray(0); for (i in 0 until a.length()) append(a.getJSONArray(i).getString(0))
             }
             cache[text] = r; r
-        } catch (_: Exception) { text }
+        } catch (e: Exception) { text }
     }
 }
